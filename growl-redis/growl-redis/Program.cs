@@ -72,7 +72,7 @@ namespace growl_redis
 
             if (parameters.ContainsKey("/appname"))
             {
-                app_name = parameters["/appname"].Value.ToLower();
+                app_name = parameters["/appname"].Value;
             }
             else
             {
