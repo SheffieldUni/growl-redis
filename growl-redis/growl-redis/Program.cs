@@ -21,6 +21,7 @@ namespace growl_redis
         static string redis_server;
         static string redis_port;
         static string script_file;
+        static string app_name;
         //static int thread_counter = 0;
 
         static Growl.Connector.GrowlConnector growl;
@@ -69,6 +70,15 @@ namespace growl_redis
                 script_file = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + @"\subscriptions.ps1";
             }
 
+            if (parameters.ContainsKey("/appname"))
+            {
+                app_name = parameters["/appname"].Value.ToLower();
+            }
+            else
+            {
+                throw new System.ArgumentException("App name required /appname:appname");
+            }
+
             Console.WriteLine("Using redis server {0}:{1}", redis_server, redis_port);
             Console.WriteLine("Using subscription script at {0}", script_file);
 
@@ -94,7 +104,7 @@ namespace growl_redis
 
             // Sort out the Growl application
             growl = new GrowlConnector();
-            app = new Growl.Connector.Application("CiCS Notifications");
+            app = new Growl.Connector.Application(app_name);
 
             NotificationType[] notification_types = new NotificationType[subscriptions.Count];
 
